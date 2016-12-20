@@ -74,7 +74,7 @@ reproduced by running this test script).
 To reproduce this, run the following script:
 
 ```bash
-RAILS_ENV=production jruby ./bin/rails runner test_schema_loading.rb
+RAILS_ENV=production jruby ./bin/rails runner test_ar_concurrency.rb
 ```
 
 In our tests, this has yielded one of the following errors in most cases (you
