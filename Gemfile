@@ -8,7 +8,7 @@ gem 'rails', '~> 5.0.0'
 platform :jruby do
   github 'jruby/activerecord-jdbc-adapter', branch: 'rails-5' do
     gem 'activerecord-jdbc-adapter'
-    gem 'activerecord-jdbcpostgresql-adapter'
+    gem 'activerecord-jdbcmysql-adapter'
   end
   # other jruby gems
 end

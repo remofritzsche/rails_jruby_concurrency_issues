@@ -5,10 +5,10 @@ GIT
   specs:
     activerecord-jdbc-adapter (5.0)
       activerecord (>= 2.2)
-    activerecord-jdbcpostgresql-adapter (5.0)
+    activerecord-jdbcmysql-adapter (5.0)
       activerecord-jdbc-adapter (~> 5.0)
-      jdbc-postgres (>= 9.1)
-    jdbc-postgres (9.3.1102)
+      jdbc-mysql (>= 5.1.22)
+    jdbc-mysql (5.1.31)
 
 GEM
   remote: https://rubygems.org/
@@ -166,7 +166,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbc-adapter!
-  activerecord-jdbcpostgresql-adapter!
+  activerecord-jdbcmysql-adapter!
   byebug
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)

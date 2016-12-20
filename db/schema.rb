@@ -12,9 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20161220101804) do
 
-  create_table "users", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+# Could not dump table "users" because of following ArgumentError
+#   wrong number of arguments (1 for 2)
 
 end
