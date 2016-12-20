@@ -3,6 +3,8 @@
 This sample Rails application reproduces multiple concurrency issues that arise
 with Rails 5 in conjunction with jRuby 9k.
 
+This has been reported in [Rails issue #27418](https://github.com/rails/rails/issues/27418).
+
 Setup
 =====
 
