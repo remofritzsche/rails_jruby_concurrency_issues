@@ -1,4 +1,4 @@
-# README
+# Rails Thread Safe Column Loading
 
 This sample Rails application reproduces the potential Rails bug described in
 [this Stack Overflow question](http://stackoverflow.com/questions/41239806).
