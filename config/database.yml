@@ -6,3 +6,12 @@ production:
   password:
   pool: 21
   timeout: 5000
+
+development:
+  adapter: mysql
+  host: localhost
+  database: thread_safe_col_loading
+  user: root
+  password:
+  pool: 21
+  timeout: 5000

@@ -172,3 +172,52 @@ test_ar_concurrency.rb:5:in `test'
 test_ar_concurrency.rb:18:in `block in (root)'
 /thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'
 ```
+
+Issue #3: Development mode auto reloading
+=========================================
+
+Autoreloading in development mode does not seem thread safe. In the past, we've
+encountered countless issues with autoreloading when using concurrency in
+development mode and just assumed this was not supported. As
+[mentioned by @mathewd](https://github.com/rails/rails/issues/27418#issuecomment-268308638)
+though, Rails' autoreloading should indeed be thread-safe.
+
+In MRI it probably is because of GIL (Global Interpreter Lock), but in jRuby we
+reckon it isn't.
+
+To reproduce one of the autoreloading exceptions, run the following script:
+
+```bash
+RAILS_ENV=development jruby ./bin/rails runner test_auto_reloading.rb
+```
+
+This leads to errors like:
+
+```
+Exception: Circular dependency detected while autoloading constant User
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:509:in `load_missing_constant'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:203:in `const_missing'
+test_auto_reloading.rb:2:in `test'
+test_auto_reloading.rb:15:in `block in (root)'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'Exception: Circular dependency detected while autoloading constant User
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:509:in `load_missing_constant'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:203:in `const_missing'
+test_auto_reloading.rb:2:in `test'
+test_auto_reloading.rb:15:in `block in (root)'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'Exception: Circular dependency detected while autoloading constant User
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:509:in `load_missing_constant'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:203:in `const_missing'
+test_auto_reloading.rb:2:in `test'
+test_auto_reloading.rb:15:in `block in (root)'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'Exception: Circular dependency detected while autoloading constant User
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:509:in `load_missing_constant'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:203:in `const_missing'
+test_auto_reloading.rb:2:in `test'
+test_auto_reloading.rb:15:in `block in (root)'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'Exception: Circular dependency detected while autoloading constant User
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:509:in `load_missing_constant'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/activesupport-5.0.0.1/lib/active_support/dependencies.rb:203:in `const_missing'
+test_auto_reloading.rb:2:in `test'
+test_auto_reloading.rb:15:in `block in (root)'
+/thread_safe_col_loading/vendor/bundle/jruby/2.3.0/gems/concurrent-ruby-1.0.3-java/lib/concurrent/executor/java_executor_service.rb:94:in `run'
+```
