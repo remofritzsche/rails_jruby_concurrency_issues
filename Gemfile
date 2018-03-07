@@ -2,14 +2,14 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '5.2.0.rc1'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3'
 platform :jruby do
-  github 'jruby/activerecord-jdbc-adapter', branch: 'rails-5' do
+  # github 'jruby/activerecord-jdbc-adapter', branch: 'rails-5' do
     gem 'activerecord-jdbc-adapter'
     gem 'activerecord-jdbcmysql-adapter'
-  end
+  # end
   # other jruby gems
 end
 
