@@ -11,10 +11,12 @@ pool = Concurrent::FixedThreadPool.new(20)
 
 20.times do
   pool.post do
-    begin
-      test
-    rescue => e
-      puts "Exception: #{e.message}\n#{e.backtrace.join("\n")}"
+    Rails.application.executor.wrap do
+      begin
+        test
+      rescue => e
+        puts "Exception: #{e.message}\n#{e.backtrace.join("\n")}"
+      end
     end
   end
 end
